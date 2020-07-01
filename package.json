@@ -30,5 +30,8 @@
   "license": "MIT",
   "peerDependencies": {
     "react-native": ">=0.61.5"
+  },
+  "dependencies": {
+    "logkitty": "^0.7.1"
   }
 }
