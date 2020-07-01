@@ -1,7 +1,8 @@
 import React from "react";
 import * as RN from "react-native";
 
-declare class DropShadowComponent extends React.Component {}
+export interface PropsView extends RN.ViewProps {}
+declare class DropShadowComponent extends React.Component<PropsView> {}
 declare const DropShadowBase: RN.Constructor<RN.NativeMethodsMixin> &
   typeof DropShadowComponent;
 
