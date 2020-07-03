@@ -1,6 +1,6 @@
 {
   "name": "react-native-drop-shadow",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "is a small and simple package that helps make your React Native app",
   "main": "index.js",
   "types": "index.d.ts",
@@ -21,7 +21,12 @@
     "ios",
     "react native new",
     "new",
-    "shadow android react native"
+    "shadow android react native",
+    "react-native-shadow",
+    "react-native shadow",
+    "react-native-drop-shadow",
+    "shadow react native",
+    "shadow react"
   ],
   "author": {
     "name": "Hoang Lam",

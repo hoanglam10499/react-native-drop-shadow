@@ -1,17 +1,11 @@
-## React Native Drop Shadow
 
-<img width="240px" align="right" src="./img/main.png" />
+<img width="1000px"  src="./img/main.png" />
 
-[![npm version](https://img.shields.io/npm/v/react-native-drop-shadow?color=green)](https://www.npmjs.com/package/react-native-drop-shadow)
-[![npm download](https://img.shields.io/npm/dm/react-native-drop-shadow?color=blue)](https://www.npmjs.com/package/react-native-drop-shadow)
+[![npm version](https://img.shields.io/npm/v/react-native-drop-shadow?color=green)](https://www.npmjs.com/package/react-native-drop-shadow) [![npm download](https://img.shields.io/npm/dm/react-native-drop-shadow?color=blue)](https://www.npmjs.com/package/react-native-drop-shadow)
 
 The problem is that a shadows does not work with React Native in Android. This view takes its children's, creates a bitmap representation, blur it and color it to styles shadow values like in iOS
 
 ### Installation
-
-`npm install react-native-drop-shadow`
-
-or
 
 `yarn add react-native-drop-shadow`
 
