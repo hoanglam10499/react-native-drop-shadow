@@ -1,0 +1,42 @@
+{
+  "name": "react-native-drop-shadow",
+  "version": "0.0.4",
+  "description": "is a small and simple package that helps make your React Native app",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoanglam10499/react-native-drop-shadow.git",
+    "baseUrl": "https://github.com/hoanglam10499/react-native-drop-shadow"
+  },
+  "homepage": "https://github.com/hoanglam10499/react-native-drop-shadow",
+  "bugs": {
+    "url": "https://github.com/hoanglam10499/react-native-drop-shadow/issues"
+  },
+  "keywords": [
+    "react-native",
+    "shadow",
+    "android",
+    "drop shadow",
+    "ios",
+    "react native new",
+    "new",
+    "shadow android react native",
+    "react-native-shadow",
+    "react-native shadow",
+    "react-native-drop-shadow",
+    "shadow react native",
+    "shadow react"
+  ],
+  "author": {
+    "name": "Hoang Lam",
+    "email": "hoanglam10499@email.com"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "react-native": ">=0.61.5"
+  },
+  "dependencies": {
+    "logkitty": "^0.7.1"
+  }
+}
