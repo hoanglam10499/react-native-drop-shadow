@@ -12,15 +12,12 @@ import java.util.Collections;
 import java.util.List;
 
 public class DropShadowPackage implements ReactPackage {
-  @NonNull
-  @Override
-  public List<NativeModule> createNativeModules(@NonNull ReactApplicationContext reactContext) {
-    return Collections.emptyList();
-  }
-
-  @NonNull
-  @Override
-  public List<ViewManager> createViewManagers(@NonNull ReactApplicationContext reactContext) {
-    return Arrays.<ViewManager>asList(new DropShadowModule());
-  }
+    @Override
+    public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
+        return Collections.emptyList();
+    }
+    @Override
+    public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
+        return Arrays.<ViewManager>asList(new DropShadowModule());
+    }
 }

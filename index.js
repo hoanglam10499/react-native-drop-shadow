@@ -1,9 +1,9 @@
 import React from "react";
-import { Platform, requireNativeComponent, View } from "react-native";
-export default (props) => {
-  if (Platform.OS === "android") {
-    const ShadowView = requireNativeComponent("DropShadow");
-    return React.createElement(ShadowView, props);
-  }
-  return React.createElement(View, props);
-};
+import { Platform, View } from "react-native";
+import { requireNativeComponent } from "react-native";
+
+const ShadowDrop =
+  Platform.OS === "android" ? requireNativeComponent("DropShadow") : View;
+export default React.memo((props) => {
+  return React.createElement(ShadowDrop, props);
+});
