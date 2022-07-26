@@ -9,6 +9,10 @@ The problem is that a shadows does not work with React Native in Android. This v
 
 `yarn add react-native-drop-shadow`
 
+With React Native lower than 0.69:
+
+`yarn add react-native-drop-shadow@0.0.4`
+
 ### Limitations
 
 - Android has a bitmap limitation of 2048x2048, but this might depend on API version.
