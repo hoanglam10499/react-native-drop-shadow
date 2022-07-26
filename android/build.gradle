@@ -19,10 +19,10 @@ def safeExtGet(prop, fallback) {
 }
 
 android {
-    compileSdkVersion safeExtGet('DropShadow_compileSdkVersion', 29)
+    compileSdkVersion safeExtGet('DropShadow_compileSdkVersion', 31)
     defaultConfig {
-        minSdkVersion safeExtGet('DropShadow_minSdkVersion', 16)
-        targetSdkVersion safeExtGet('DropShadow_targetSdkVersion', 29)
+        minSdkVersion safeExtGet('DropShadow_minSdkVersion', 21)
+        targetSdkVersion safeExtGet('DropShadow_targetSdkVersion', 31)
         versionCode 1
         versionName "1.0"
 
