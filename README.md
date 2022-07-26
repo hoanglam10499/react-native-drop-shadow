@@ -9,7 +9,7 @@ The problem is that a shadows does not work with React Native in Android. This v
 
 `yarn add react-native-drop-shadow`
 
-With React Native lower than 0.69:
+If you using `minSdkVersion = 16`:
 
 `yarn add react-native-drop-shadow@0.0.4`
 
