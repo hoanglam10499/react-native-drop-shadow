@@ -1,6 +1,6 @@
 {
   "name": "react-native-drop-shadow",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "is a small and simple package that helps make your React Native app",
   "main": "index.js",
   "types": "index.d.ts",
