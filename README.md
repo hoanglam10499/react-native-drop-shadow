@@ -105,6 +105,8 @@ You can then use `AnimatedDropShadow` in place of `Animated.View`.
 
 MIT
 
-### Pull requests
+### Donate ✨
 
-Always welcome!
+Support maintainers with a donation and help them continue with activities.
+
+<p><a href="https://www.buymeacoffee.com/hoanglam104"> <img align="left" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="50" width="210" alt="fateh999" /></a></p><br><br><br>
