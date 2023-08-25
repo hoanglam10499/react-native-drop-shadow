@@ -1,4 +1,4 @@
-package com.dropShadow;
+package com.dropshadow;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,7 +17,7 @@ import com.facebook.react.bridge.Dynamic;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.views.view.ReactViewGroup;
 
-public class DropShadowLayout extends ReactViewGroup {
+public class DropShadowLayout extends ReactViewGroup  {
   public DropShadowLayout(Context context) {
     super(context);
   }
