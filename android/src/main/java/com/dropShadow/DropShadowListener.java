@@ -1,4 +1,4 @@
-package com.dropshadow;
+package com.dropShadow;
 
 import android.os.CountDownTimer;
 import android.view.View;

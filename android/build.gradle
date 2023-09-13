@@ -85,7 +85,7 @@ def supportsNamespace() {
 
 android {
   if (supportsNamespace()) {
-    namespace "com.dropshadow"
+    namespace "com.dropShadow"
 
     sourceSets {
       main {
@@ -153,6 +153,6 @@ if (isNewArchitectureEnabled()) {
   react {
     jsRootDir = file("../src/")
     libraryName = "DropShadow"
-    codegenJavaPackageName = "com.dropshadow"
+    codegenJavaPackageName = "com.dropShadow"
   }
 }
