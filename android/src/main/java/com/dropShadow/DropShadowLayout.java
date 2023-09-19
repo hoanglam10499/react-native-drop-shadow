@@ -17,7 +17,7 @@ import com.facebook.react.bridge.Dynamic;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.views.view.ReactViewGroup;
 
-public class DropShadowLayout extends ReactViewGroup  {
+public class DropShadowLayout extends ReactViewGroup {
   public DropShadowLayout(Context context) {
     super(context);
   }
@@ -115,7 +115,7 @@ public class DropShadowLayout extends ReactViewGroup  {
       content.recycle();
       hasContent = false;
       content = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-      draw.setBitmap(content);
+      draw.setBitmap(to4BytesPerPixelBitmap(content));
     }
     invalidate();
   }
@@ -137,11 +137,26 @@ public class DropShadowLayout extends ReactViewGroup  {
         }
         x = dX - ((shadow.getWidth() - content.getWidth()) / 2);
         y = dY - ((shadow.getHeight() - content.getHeight()) / 2);
-        canvas.drawBitmap(shadow, x, y, paint);
+        canvas.drawBitmap(to4BytesPerPixelBitmap(shadow), x, y, paint);
       }
-      canvas.drawBitmap(content, 0f, 0f, null);
+      canvas.drawBitmap(to4BytesPerPixelBitmap(content), 0f, 0f, null);
     }
     super.dispatchDraw(canvas);
+  }
 
+  /**
+   * Convert a Bitmap to a Bitmap that has 4 bytes per pixel
+   *
+   * @param input The bitmap to convert to a 4 bytes per pixel Bitmap
+   * @return The converted Bitmap. Note: The caller of this method is
+   * responsible for reycling the input
+   */
+  public static Bitmap to4BytesPerPixelBitmap(@NonNull final Bitmap input) {
+    final Bitmap bitmap = Bitmap.createBitmap(input.getWidth(), input.getHeight(), Bitmap.Config.ARGB_8888);
+    // Instantiate the canvas to draw on:
+    final Canvas canvas = new Canvas(bitmap);
+    canvas.drawBitmap(input, 0, 0, null);
+    // Return the new bitmap:
+    return bitmap;
   }
 }

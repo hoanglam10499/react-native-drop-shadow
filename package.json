@@ -1,6 +1,6 @@
 {
   "name": "react-native-drop-shadow",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "is a small and simple package that helps make your React Native app",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
