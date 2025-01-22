@@ -1,6 +1,5 @@
 import * as React from 'react';
-
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text, Platform } from 'react-native';
 import DropShadow from 'react-native-drop-shadow';
 
 export default function App() {

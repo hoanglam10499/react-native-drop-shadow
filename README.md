@@ -1,4 +1,3 @@
-
 <img width="1000px"  src="./img/main.png" />
 
 [![npm version](https://img.shields.io/npm/v/react-native-drop-shadow?color=green)](https://www.npmjs.com/package/react-native-drop-shadow) [![npm download](https://img.shields.io/npm/dm/react-native-drop-shadow?color=blue)](https://www.npmjs.com/package/react-native-drop-shadow)
@@ -8,6 +7,10 @@ The problem is that a shadows does not work with React Native in Android. This v
 ### Installation
 
 `yarn add react-native-drop-shadow`
+
+If you using `React-native < 0.76`:
+
+`yarn add react-native-drop-shadow@1.0.0`
 
 If you using `minSdkVersion = 16`:
 
@@ -21,7 +24,7 @@ If you using `minSdkVersion = 16`:
 ### Usage
 
 ```js
-import DropShadow from "react-native-drop-shadow";
+import DropShadow from 'react-native-drop-shadow';
 ```
 
 ```js
@@ -29,7 +32,7 @@ export default function usage() {
   return (
     <DropShadow
       style={{
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: {
           width: 0,
           height: 0,
@@ -50,13 +53,13 @@ export default function usage() {
 export default function withFlatList() {
   return (
     <FlatList
-      data={[""]}
-      keyExtractor={(item, index) => "List-" + index}
+      data={['']}
+      keyExtractor={(item, index) => 'List-' + index}
       CellRendererComponent={DropShadow} // <==== add line
       renderItem={({ item, index }) => (
         <DropShadow
           style={{
-            shadowColor: "#000",
+            shadowColor: '#000',
             shadowOffset: {
               width: 0,
               height: 0,
@@ -84,7 +87,7 @@ export default function withAnimatedViews() {
   return (
     <AnimatedDropShadow
       style={{
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: {
           width: 0,
           height: 0,
