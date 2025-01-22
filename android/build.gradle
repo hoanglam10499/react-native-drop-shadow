@@ -1,4 +1,7 @@
 buildscript {
+  // Buildscript is evaluated before everything else so we can't use getExtOrDefault
+  def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["DropShadow_kotlinVersion"]
+
   repositories {
     google()
     mavenCentral()
@@ -6,50 +9,22 @@ buildscript {
 
   dependencies {
     classpath "com.android.tools.build:gradle:7.2.1"
+    // noinspection DifferentKotlinGradleVersion
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
+}
+
+def reactNativeArchitectures() {
+  def value = rootProject.getProperties().get("reactNativeArchitectures")
+  return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 }
 
 def isNewArchitectureEnabled() {
   return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
 }
 
-def resolveReactNativeDirectory() {
-  def reactNativeLocation = rootProject.hasProperty("reactNativeDir") ? rootProject.getProperty("reactNativeDir") : null
-
-  if (reactNativeLocation != null) {
-    return file(reactNativeLocation)
-  }
-
-  try {
-    // Resolve React Native location with Node
-    // This will make sure that we get installation location correctly in monorepos
-    def reactNativePackageJsonPathStdout = new ByteArrayOutputStream()
-
-    exec {
-      commandLine("node", "-p", "require.resolve('react-native/package.json')")
-      ignoreExitValue true
-      standardOutput = reactNativePackageJsonPathStdout
-    }
-
-    def reactNativeFromProjectNodeModules = file(reactNativePackageJsonPathStdout.toString().trim()).getParentFile();
-
-    if (reactNativeFromProjectNodeModules.exists()) {
-      return reactNativeFromProjectNodeModules
-    }
-  } catch (e) {
-    // Ignore
-  }
-
-  throw new Exception(
-    "${project.name}: Failed to resolve 'react-native' in the project. " +
-    "Altenatively, you can specify 'reactNativeDir' with the path to 'react-native' in your 'gradle.properties' file."
-  )
-}
-
 apply plugin: "com.android.library"
-
-
-def appProject = rootProject.allprojects.find { it.plugins.hasPlugin('com.android.application') }
+apply plugin: "kotlin-android"
 
 if (isNewArchitectureEnabled()) {
   apply plugin: "com.facebook.react"
@@ -63,29 +38,18 @@ def getExtOrIntegerDefault(name) {
   return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["DropShadow_" + name]).toInteger()
 }
 
-def reactNativeRootDir = resolveReactNativeDirectory()
-def reactProperties = new Properties()
-file("$reactNativeRootDir/ReactAndroid/gradle.properties").withInputStream { reactProperties.load(it) }
-
-def reactNativeVersion = reactProperties.getProperty("VERSION_NAME")
-def (reactNativeMajorVersion, reactNativeMinorVersion) = reactNativeVersion.split("\\.").collect { it.isInteger() ? it.toInteger() : it }
-
 def supportsNamespace() {
   def parsed = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')
   def major = parsed[0].toInteger()
   def minor = parsed[1].toInteger()
 
   // Namespace support was added in 7.3.0
-  if (major == 7 && minor >= 3) {
-    return true
-  }
-
-  return major >= 8
+  return (major == 7 && minor >= 3) || major >= 8
 }
 
 android {
   if (supportsNamespace()) {
-    namespace "com.dropShadow"
+    namespace "com.dropshadow"
 
     sourceSets {
       main {
@@ -100,7 +64,13 @@ android {
     minSdkVersion getExtOrIntegerDefault("minSdkVersion")
     targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
     buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+
   }
+
+  buildFeatures {
+    buildConfig true
+  }
+
   buildTypes {
     release {
       minifyEnabled false
@@ -116,43 +86,37 @@ android {
     targetCompatibility JavaVersion.VERSION_1_8
   }
 
-}
-
-repositories {
-  mavenCentral()
-  google()
-
-   if (reactNativeMajorVersion == 0 && reactNativeMinorVersion < 71) {
-    def androidSourcesDir = file("$reactNativeRootDir/android")
-    def androidSourcesName = "React Native sources"
-
-    if (androidSourcesDir.exists()) {
-      maven {
-        url androidSourcesDir.toString()
-        name androidSourcesName
+  sourceSets {
+    main {
+      if (isNewArchitectureEnabled()) {
+          java.srcDirs += [
+            "generated/java",
+            "generated/jni"
+          ]
       }
     }
   }
 }
 
+repositories {
+  mavenCentral()
+  google()
+}
+
+def kotlin_version = getExtOrDefault("kotlinVersion")
 
 dependencies {
   // For < 0.71, this will be from the local maven repo
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
   //noinspection GradleDynamicVersion
-  if (reactNativeMajorVersion == 0 && reactNativeMinorVersion < 71) {
-    //noinspection GradleDynamicVersion
-    implementation "com.facebook.react:react-native:+"
-    // From node_modules
-  } else {
-    implementation "com.facebook.react:react-android:+"
-  }
+  implementation "com.facebook.react:react-native:+"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 if (isNewArchitectureEnabled()) {
   react {
     jsRootDir = file("../src/")
     libraryName = "DropShadow"
-    codegenJavaPackageName = "com.dropShadow"
+    codegenJavaPackageName = "com.dropshadow"
   }
 }
