@@ -2,10 +2,11 @@ package com.dropshadow
 
 import android.os.CountDownTimer
 import android.view.View
-import android.view.ViewGroup
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.UiThreadUtil
+import com.facebook.react.uimanager.UIManagerHelper
 import com.facebook.react.uimanager.UIManagerModule
+import com.facebook.react.uimanager.common.UIManagerType
 import com.facebook.react.uimanager.events.Event
 import com.facebook.react.uimanager.events.EventDispatcher
 import com.facebook.react.uimanager.events.EventDispatcherListener
@@ -15,12 +16,13 @@ import java.util.ArrayList
 import java.util.HashMap
 
 class DropShadowListener(private val reactContext: ReactContext) : EventDispatcherListener {
-
   private val imageIds = HashMap<Int, DropShadowLayout>()
   private val viewsToFadeIn = ArrayList<DropShadowLayout>()
-  private val eventDispatcher: EventDispatcher? =
-    reactContext.getNativeModule(UIManagerModule::class.java)?.eventDispatcher
   private var fadeTimer: CountDownTimer? = null
+
+  private val eventDispatcher: EventDispatcher? =
+    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) UIManagerHelper.getUIManager(reactContext, UIManagerType.FABRIC)?.eventDispatcher
+    else reactContext.getNativeModule(UIManagerModule::class.java)?.eventDispatcher
 
   init {
     eventDispatcher?.addListener(this)
