@@ -1,8 +1,8 @@
 {
   "name": "react-native-drop-shadow",
-  "version": "1.0.3",
-  "description": "is a small and simple package that helps make your React Native app",
-  "main": "lib/module/index",
+  "version": "2.0.0",
+  "description": "Beautiful cross-platform shadows for React Native, with automatic boxShadow rendering and a legacy Android fallback.",
+  "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "react-native": "src/index",
   "source": "src/index",
@@ -11,11 +11,12 @@
     "src",
     "lib",
     "android",
-    "ios",
-    "cpp",
-    "*.podspec",
+    "img/main.png",
+    "img/example_legacy.png",
+    "img/example_modern.png",
     "react-native.config.js",
     "!android/build",
+    "!android/src/test",
     "!android/gradle",
     "!android/gradlew",
     "!android/gradlew.bat",
@@ -26,32 +27,26 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "yarn workspace react-native-drop-shadow-example",
+    "example": "yarn workspace DropShadowModern",
     "test": "jest",
-    "typecheck": "tsc",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint \"**/*.{js,cjs,ts,tsx}\"",
+    "clean": "del-cli android/build examples/legacy/android/build examples/legacy/android/app/build examples/legacy/ios/build examples/modern/android/build examples/modern/android/app/build examples/modern/ios/build lib",
     "prepare": "bob build",
     "release": "release-it"
   },
   "keywords": [
     "react-native",
+    "ios",
     "shadow",
+    "drop-shadow",
+    "box-shadow",
     "android",
-    "drop shadow",
-    "react native new",
-    "new",
-    "shadow android react native",
-    "react-native-shadow",
-    "react-native shadow",
-    "react-native-drop-shadow",
-    "shadow react native",
-    "shadow react"
+    "fabric"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hoanglam10499/react-native-drop-shadow.git",
-    "baseUrl": "https://github.com/hoanglam10499/react-native-drop-shadow"
+    "url": "git+https://github.com/hoanglam10499/react-native-drop-shadow.git"
   },
   "author": "Hoang Lam <hoanglam10499@gmail.com> (https://github.com/hoanglam10499)",
   "license": "MIT",
@@ -63,13 +58,16 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
+    "@babel/core": "^7.25.2",
     "@commitlint/config-conventional": "^17.0.2",
     "@evilmartians/lefthook": "^1.5.0",
-    "@react-native-community/cli": "15.0.1",
-    "@react-native/eslint-config": "^0.73.1",
+    "@react-native/babel-preset": "0.88.1",
+    "@react-native/eslint-config": "0.88.1",
+    "@react-native/jest-preset": "0.88.1",
     "@release-it/conventional-changelog": "^9.0.2",
     "@types/jest": "^29.5.5",
-    "@types/react": "^18.2.44",
+    "@types/react": "^19.2.0",
+    "@types/react-test-renderer": "^19.1.0",
     "commitlint": "^17.0.2",
     "del-cli": "^5.1.0",
     "eslint": "^8.51.0",
@@ -77,28 +75,27 @@
     "eslint-plugin-prettier": "^5.0.1",
     "jest": "^29.7.0",
     "prettier": "^3.0.3",
-    "react": "18.3.1",
-    "react-native": "0.77.0",
-    "react-native-builder-bob": "^0.32.0",
+    "react": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-builder-bob": "^0.44.1",
+    "react-test-renderer": "19.3.0",
     "release-it": "^17.10.0",
-    "turbo": "^1.10.7",
-    "typescript": "^5.2.2"
-  },
-  "resolutions": {
-    "@types/react": "^18.2.44"
+    "typescript": "^6.0.3"
   },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
   },
   "workspaces": [
-    "example"
+    "examples/legacy",
+    "examples/modern",
+    "examples/web"
   ],
   "packageManager": "yarn@3.6.1",
   "jest": {
-    "preset": "react-native",
+    "preset": "@react-native/jest-preset",
     "modulePathIgnorePatterns": [
-      "<rootDir>/example/node_modules",
+      "<rootDir>/examples/",
       "<rootDir>/lib/"
     ]
   },
@@ -126,6 +123,9 @@
   },
   "eslintConfig": {
     "root": true,
+    "plugins": [
+      "prettier"
+    ],
     "extends": [
       "@react-native",
       "prettier"
@@ -146,7 +146,14 @@
   },
   "eslintIgnore": [
     "node_modules/",
-    "lib/"
+    ".yarn/",
+    "lib/",
+    "android/build/",
+    "examples/*/android/build/",
+    "examples/*/android/app/build/",
+    "examples/web/dist/",
+    "examples/web/dist-server/",
+    "examples/web/test-results/"
   ],
   "prettier": {
     "quoteProps": "consistent",
@@ -159,44 +166,26 @@
     "source": "src",
     "output": "lib",
     "targets": [
-      "codegen",
       [
         "commonjs",
         {
-          "esm": true
+          "esm": true,
+          "jsxRuntime": "classic"
         }
       ],
       [
         "module",
         {
-          "esm": true
+          "esm": true,
+          "jsxRuntime": "classic"
         }
       ],
       [
         "typescript",
         {
-          "project": "tsconfig.build.json",
-          "esm": true
+          "project": "tsconfig.build.json"
         }
       ]
     ]
-  },
-  "codegenConfig": {
-    "name": "RNDropShadowSpec",
-    "type": "modules",
-    "jsSrcsDir": "src",
-    "outputDir": {
-      "android": "android/generated",
-      "ios": "ios/generated"
-    },
-    "android": {
-      "javaPackageName": "com.dropshadow"
-    },
-    "includesGeneratedCode": true
-  },
-  "create-react-native-library": {
-    "type": "turbo-module",
-    "languages": "kotlin-objc",
-    "version": "0.45.5"
   }
 }

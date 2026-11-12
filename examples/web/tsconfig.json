@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "allowJs": true,
+    "checkJs": true,
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "paths": {
+      "react-native-drop-shadow": ["../../src/index.tsx"],
+      "packed-module": ["../../lib/typescript/module/index.d.ts"],
+      "packed-commonjs": ["../../lib/typescript/commonjs/index.d.ts"]
+    }
+  },
+  "include": ["*.tsx", "commonjs-entry.cjs", "tests/*.tsx"]
+}

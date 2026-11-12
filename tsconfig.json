@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
     "paths": {
       "react-native-drop-shadow": ["./src/index"]
     },
@@ -11,7 +10,7 @@
     "jsx": "react-jsx",
     "lib": ["esnext"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noImplicitUseStrict": false,
@@ -23,6 +22,8 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "esnext",
+    "types": ["jest"],
     "verbatimModuleSyntax": true
-  }
+  },
+  "exclude": ["examples"]
 }

@@ -20,18 +20,16 @@ class DropShadowModule :
     const val NAME = "DropShadow"
   }
 
-  var imageListener: DropShadowListener? = null
+  private val imageListeners = mutableMapOf<DropShadowLayout, DropShadowListener>()
 
   override fun createViewInstance(reactContext: ThemedReactContext): DropShadowLayout {
     val layout = DropShadowLayout(reactContext)
-    if (imageListener == null) {
-      imageListener = DropShadowListener(reactContext)
-    }
+    imageListeners[layout] = DropShadowListener(reactContext)
     return layout
   }
 
   @ReactProp(name = "shadowOffset")
-  fun setShadowOffset(view: DropShadowLayout, offsetMap: ReadableMap) {
+  fun setShadowOffset(view: DropShadowLayout, offsetMap: ReadableMap?) {
     view.setShadowOffset(offsetMap)
   }
 
@@ -41,22 +39,22 @@ class DropShadowModule :
   }
 
   @ReactProp(name = "shadowOpacity")
-  fun setShadowOpacity(view: DropShadowLayout, opacity: Dynamic) {
+  fun setShadowOpacity(view: DropShadowLayout, opacity: Dynamic?) {
     view.setShadowOpacity(opacity)
   }
 
   @ReactProp(name = "shadowRadius")
-  fun setShadowRadius(view: DropShadowLayout, radius: Dynamic) {
+  fun setShadowRadius(view: DropShadowLayout, radius: Dynamic?) {
     view.setShadowRadius(radius)
   }
 
   override fun addView(parent: DropShadowLayout, child: View, index: Int) {
-    imageListener?.onAddView(parent, child)
+    imageListeners[parent]?.onAddView(parent, child)
     super.addView(parent, child, index)
   }
 
   override fun onDropViewInstance(parent: DropShadowLayout) {
-    imageListener?.tearDown()
+    imageListeners.remove(parent)?.tearDown()
+    super.onDropViewInstance(parent)
   }
 }
-

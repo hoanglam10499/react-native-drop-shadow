@@ -1,19 +1,22 @@
 import React from 'react';
-import { type ViewProps, requireNativeComponent, Platform } from 'react-native';
+import { View, type ViewProps, requireNativeComponent } from 'react-native';
+import { getBoxShadowStyle } from './boxShadow';
+import type { DropShadowProps } from './types';
+import { useShadowRef } from './useShadowRef';
 
 const NativeShadow = requireNativeComponent<ViewProps>('DropShadow');
 
-const LINKING_ERROR =
-  `The package 'react-native-drop-shadow' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo Go\n';
-
-export class DropShadow extends React.Component<ViewProps> {
-  render(): React.ReactNode {
-    if (NativeShadow == null) {
-      throw new Error(LINKING_ERROR);
+export const DropShadow: React.ForwardRefExoticComponent<
+  DropShadowProps & React.RefAttributes<React.ElementRef<typeof View>>
+> = React.forwardRef<React.ElementRef<typeof View>, DropShadowProps>(
+  ({ useLegacyShadow, ...props }, forwardedRef) => {
+    const { ref, isFabric } = useShadowRef(forwardedRef);
+    const style = useLegacyShadow
+      ? null
+      : getBoxShadowStyle(props.style, isFabric);
+    if (style != null) {
+      return <View {...props} ref={ref} style={style} />;
     }
-    return <NativeShadow {...this.props} />;
+    return <NativeShadow {...props} ref={ref} />;
   }
-}
+);

@@ -1,19 +1,8 @@
 # Security Policy
 
-## Supported Versions
-
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
-
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.0.1   | RN@0.76            |
-| 1.0.0   | RN@0.75            |
-
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
-
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Please report suspected vulnerabilities privately through GitHub's private
+vulnerability reporting feature, if available for this repository. Otherwise,
+contact the maintainer using the contact details in `package.json`. Avoid
+posting exploit details in public issues before maintainers can investigate.

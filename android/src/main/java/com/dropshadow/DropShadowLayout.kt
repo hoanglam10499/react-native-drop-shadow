@@ -30,7 +30,6 @@ class DropShadowLayout(context: Context) : ReactViewGroup(context) {
     private var shadowDirty: Boolean = false
     private var hasContent: Boolean = false
     private var hasOpacity: Boolean = false
-    private var hasRadius: Boolean = false
     private var hasColor: Boolean = false
     private var hasArea: Boolean = false
 
@@ -73,7 +72,7 @@ class DropShadowLayout(context: Context) : ReactViewGroup(context) {
         hasColor = color != null
         if (hasColor && this.color != color) {
             paint.color = color!!
-            paint.alpha = (255 * opacity).roundToInt()
+            paint.alpha = (Color.alpha(color) * opacity).roundToInt()
             this.color = color
         }
         super.invalidate()
@@ -85,19 +84,17 @@ class DropShadowLayout(context: Context) : ReactViewGroup(context) {
         hasOpacity = hasOpacity && newOpacity > 0f
         if (hasOpacity && opacity != newOpacity) {
             paint.color = color
-            paint.alpha = (255 * newOpacity).roundToInt()
+            paint.alpha = (Color.alpha(color) * newOpacity).roundToInt()
             opacity = newOpacity
         }
         super.invalidate()
     }
 
     fun setShadowRadius(radiusDynamic: Dynamic?) {
-        hasRadius = radiusDynamic != null && !radiusDynamic.isNull
-        val rawRadius = if (hasRadius) radiusDynamic?.asDouble()?.toFloat() ?: 0f else 0f
+        val rawRadius = if (radiusDynamic != null && !radiusDynamic.isNull) radiusDynamic.asDouble().toFloat() else 0f
         val scaledRadius = (rawRadius * 2) * resources.displayMetrics.density
-        hasRadius = hasRadius && scaledRadius > 0f
-        if (hasRadius && radius != scaledRadius) {
-            blurPaint.maskFilter = BlurMaskFilter(scaledRadius, Blur.NORMAL)
+        if (radius != scaledRadius) {
+            blurPaint.maskFilter = if (scaledRadius > 0f) BlurMaskFilter(scaledRadius, Blur.NORMAL) else null
             radius = scaledRadius
             shadowDirty = true
         }

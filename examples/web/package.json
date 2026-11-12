@@ -1,0 +1,36 @@
+{
+  "name": "DropShadowWeb",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "eslintConfig": {
+    "env": {
+      "node": true,
+      "es2022": true
+    },
+    "parserOptions": {
+      "ecmaVersion": "latest"
+    }
+  },
+  "scripts": {
+    "start": "vite --config vite.config.tsx --host 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "build": "vite build --config vite.config.tsx",
+    "test": "node verify-package.cjs"
+  },
+  "dependencies": {
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native-drop-shadow": "workspace:*",
+    "react-native-web": "0.21.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "tar": "^7.5.0",
+    "typescript": "^6.0.3",
+    "vite": "8.3.8"
+  }
+}

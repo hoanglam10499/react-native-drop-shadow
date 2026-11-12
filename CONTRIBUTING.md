@@ -9,25 +9,33 @@ We want this community to be friendly and respectful to each other. Please follo
 This project is a monorepo managed using [Yarn workspaces](https://yarnpkg.com/features/workspaces). It contains the following packages:
 
 - The library package in the root directory.
-- An example app in the `example/` directory.
+- Paper and Fabric examples in `examples/legacy/` and `examples/modern/`.
+- A browser/SSR verification host in `examples/web/`.
 
-To get started with the project, run `yarn` in the root directory to install the required dependencies for each package:
+Use Yarn 3.6.1 and a Node version supported by Builder Bob 0.44.1
+(`^22.22.2 || ^24.15.0 || >=26.0.0`); see `.nvmrc` for the CI version.
+Install dependencies from the root directory:
 
 ```sh
-yarn
+yarn install --immutable
 ```
 
 > Since the project relies on Yarn workspaces, you cannot use [`npm`](https://github.com/npm/cli) for development.
 
-The [example app](/example/) demonstrates usage of the library. You need to run it to test any changes you make.
+The [example apps](./README.md#example-applications) demonstrate usage of the
+library. Select the app and device appropriate for the behavior being changed.
 
 It is configured to use the local version of the library, so any changes you make to the library's source code will be reflected in the example app. Changes to the library's JavaScript code will be reflected in the example app without a rebuild, but native code changes will require a rebuild of the example app.
 
-If you want to use Android Studio or XCode to edit the native code, you can open the `example/android` or `example/ios` directories respectively in those editors. To edit the Objective-C or Swift files, open `example/ios/DropShadowExample.xcworkspace` in XCode and find the source files at `Pods > Development Pods > react-native-drop-shadow`.
+Open an example's `android` directory in Android Studio or its iOS workspace
+in Xcode to work on host integration. The library's native fallback is Android
+Kotlin; iOS uses React Native's `View`.
 
-To edit the Java or Kotlin files, open `example/android` in Android studio and find the source files at `react-native-drop-shadow` under `Android`.
+To edit the Java or Kotlin files, open `examples/modern/android` in Android
+Studio and find the source files at `react-native-drop-shadow` under `Android`.
 
 You can use various commands from the root directory to work with the project.
+The `yarn example` shortcut targets the modern Fabric application.
 
 To start the packager:
 
@@ -47,13 +55,12 @@ To run the example app on iOS:
 yarn example ios
 ```
 
-To confirm that the app is running with the new architecture, you can check the Metro logs for a message like this:
+For the Paper and Fabric examples, use `yarn workspace DropShadowLegacy` or
+`yarn workspace DropShadowModern` followed by `start`, `android`, or `ios`.
+See the README for platform setup and the limits of the verified matrix.
 
-```sh
-Running "DropShadowExample" with {"fabric":true,"initialProps":{"concurrentRoot":true},"rootTag":1}
-```
-
-Note the `"fabric":true` and `"concurrentRoot":true` properties.
+Keep handwritten TypeScript source and tests in `.tsx` files, including helpers
+that do not contain JSX. Generated `.d.ts` declarations are unchanged.
 
 Make sure your code passes TypeScript and ESLint. Run the following to verify:
 
@@ -73,6 +80,18 @@ Remember to add tests for your change if possible. Run the unit tests by:
 ```sh
 yarn test
 ```
+
+For Android changes, also build the selected example's R8-enabled release and
+run the native regression tests. Commands, consumer rules, and the RN 0.81.6
+Paper-specific keep rule are documented in
+[Android release builds](./README.md#android-release-builds-r8--proguard).
+Check the installed release on a device; a successful R8 build alone does not
+prove that JNI or reflection-based properties survived optimization.
+
+For Web changes, run the [Web verification commands](./README.md#development).
+The tests exercise the packed package as well as source imports, server
+rendering, hydration, DOM refs, CSS shadows, and child state in Chromium.
+Keep Web host dependencies out of the library's runtime dependencies.
 
 ### Commit message convention
 

@@ -5,8 +5,6 @@ import android.view.View
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.bridge.UiThreadUtil
 import com.facebook.react.uimanager.UIManagerHelper
-import com.facebook.react.uimanager.UIManagerModule
-import com.facebook.react.uimanager.common.UIManagerType
 import com.facebook.react.uimanager.events.Event
 import com.facebook.react.uimanager.events.EventDispatcher
 import com.facebook.react.uimanager.events.EventDispatcherListener
@@ -20,15 +18,13 @@ class DropShadowListener(private val reactContext: ReactContext) : EventDispatch
   private val viewsToFadeIn = ArrayList<DropShadowLayout>()
   private var fadeTimer: CountDownTimer? = null
 
-  private val eventDispatcher: EventDispatcher? =
-    if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) UIManagerHelper.getUIManager(reactContext, UIManagerType.FABRIC)?.eventDispatcher
-    else reactContext.getNativeModule(UIManagerModule::class.java)?.eventDispatcher
-
-  init {
-    eventDispatcher?.addListener(this)
-  }
+  private var eventDispatcher: EventDispatcher? = null
 
   fun onAddView(parent: DropShadowLayout, child: View) {
+    if (eventDispatcher == null) {
+      eventDispatcher = UIManagerHelper.getEventDispatcherForReactTag(reactContext, parent.id)
+      eventDispatcher?.addListener(this)
+    }
     when (child) {
       is ReactImageView -> {
         child.setShouldNotifyLoadEvents(true)
@@ -71,6 +67,9 @@ class DropShadowListener(private val reactContext: ReactContext) : EventDispatch
   }
 
   fun tearDown() {
+    fadeTimer?.cancel()
+    imageIds.clear()
+    viewsToFadeIn.clear()
     eventDispatcher?.removeListener(this)
   }
 }
