@@ -1,6 +1,6 @@
 {
   "name": "react-native-drop-shadow",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Beautiful cross-platform shadows for React Native, with automatic boxShadow rendering and a legacy Android fallback.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
